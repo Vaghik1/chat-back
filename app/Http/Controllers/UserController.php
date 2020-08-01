@@ -5,7 +5,7 @@ use App\User;
 use JWTAuth;
 use JWTAuthException;
 use Illuminate\Support\Str;
-use Validator, DB, Hash, Mail;
+use Validator, DB, Hash, Mail, Cookie;
 
 class UserController extends Controller
 {
@@ -38,16 +38,17 @@ class UserController extends Controller
             $user->auth_token = $token;
             $user->save();
             $response = ['success' => true, 'data' => [
-                'id'=>$user->id,
-                'auth_token'=>$user->auth_token,
-                'name'=>$user->name, 
-                'email'=>$user->email
-            ]];           
+                'id' => $user->id,
+                'auth_token' => $token,
+                'name' => $user->name, 
+                'email' => $user->email
+            ]];      
+            Cookie::queue('auth_token', $token);     
         } else {
-          $response = ['success'=>false, 'data'=>'Record doesnt exists'];
+          $response = ['success'=> false, 'data' => 'Record doesnt exists'];
         }
 
-        return response()->json($response, 201);
+        return response()->json($response);
     }
 
     public function verifyUser(Request $request)
