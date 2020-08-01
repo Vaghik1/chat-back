@@ -19,4 +19,5 @@ Route::group(['middleware' => ['jwt.auth','api-header']], function () {
 Route::group(['middleware' => 'api-header'], function () {
     Route::post('user/login', 'UserController@login');
     Route::post('user/register', 'UserController@register');
+    Route::post('user/verify', 'UserController@verifyUser');
 });
