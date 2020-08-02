@@ -17,7 +17,7 @@ class jwtMiddleware
     public function handle($request, Closure $next)
     {
         try {
-            $user = JWTAuth::toUser($request->cookie('auth_token'));
+            $user = JWTAuth::toUser($request->cookie('token'));
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return $next($request);
