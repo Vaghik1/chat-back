@@ -8,16 +8,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['jwt.auth']], function () {
-    Route::get('users/list', function(){
-        $users = App\User::all();
-        
-        $response = ['success' => true, 'data' => $users];
-        return response()->json($response, 201);
-    });
+    Route::get('auth/me', 'AuthController@me');
+    Route::put('user/update', 'UserController@update');
+    Route::get('users', 'UserController@index');
+    Route::get('auth/logout', 'AuthController@logout');
 });
 
-Route::group(['prefix' => 'user'], function () {
-    Route::post('login', 'UserController@login');
-    Route::post('register', 'UserController@register');
-    Route::post('verify', 'UserController@verifyUser');
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('register', 'AuthController@register');
+    Route::post('verify', 'AuthController@verifyUser');
 });
