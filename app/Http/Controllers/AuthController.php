@@ -35,6 +35,7 @@ class AuthController extends Controller
             $user = auth()->user();
             if($user) {
                 return response()->json(['success' => true, 'data' => [
+                    'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'username' => $user->username,
@@ -52,6 +53,7 @@ class AuthController extends Controller
     {
         try {
             auth()->logout();
+            Cookie::queue('token', '');     
             return response()->json(['success' => true, 'data' => 'success']);
         } catch(\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -71,7 +73,7 @@ class AuthController extends Controller
                     'auth_token' => $token,
                     'name' => $user->name, 
                     'email' => $user->email,
-                    'username' => $user->username
+                    'username' => $user->username,
                 ]];      
                 Cookie::queue('token', $token);     
                 return response()->json($response);
