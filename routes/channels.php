@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}.{recipient_id}', function ($user, $id) {
+Broadcast::channel('App.User.{id}', function ($user, $id) {
     return $user->id == $id;
+});
+
+Broadcast::channel('Chat', function ($user) {
+    return Auth::check();
+});
+
+Broadcast::channel('App.UserTyping.{recipient_id}', function ($user, $recipient_id) {
+    return true;
 });
